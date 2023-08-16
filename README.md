@@ -25,26 +25,30 @@ No arquivo `appsettings.json` adicione o seguinte código e coloque o token de au
 
 ## Considerações
 O upload é bastante simplificado e fácil a implementação, sendo realizado em dois passos utilizando a abordagem form-based (envio de formulário de arquivo).
-- Passo 1: Enviar uma requisição POST para criar o video no vimeo com a seguinte estrutura:
-```
-{
-    "upload": {
-        "size": 1675456,
-        "approach": "post"
-    },
-    "privacy": {
-        "view": "nobody"
-    },
-    "name": "example.mp4"
-}
-```
+- Passo 1: É enviado uma requisição POST para criar o video no vimeo com a seguinte estrutura:
+    ```
+    {
+        "upload": {
+            "size": 1675456,
+            "approach": "post"
+        },
+        "privacy": {
+            "view": "nobody"
+        },
+        "name": "example.mp4"
+    }
+    ```
+    Essa requisição terá como resultado as informações do Video no Vimeo.
 
     Para verificar todas as opções de privacidade, upload e meta-data do arquivo, consulte [Vimeo Upload](https://developer.vimeo.com/api/reference/videos#upload_video)
 
-- Passo 2: Com o resultado do passo anterior, será gerado um link resultante que deverá ser utilizado para envio do arquivo para o vimeo.
-Este link não necessita de headers adicionais para autenticação, pois os parâmetros já fazem este trabalho.
+- Passo 2: Com o resultado do passo anterior, será gerado um link resultante que é ser utilizado para envio do arquivo de video para o vimeo.
+    Este link não necessita de headers adicionais para autenticação.
+    Com este link, uma requisição POST é feita utilizando um form-data com name `file_data`.
+    **Essa requisição necessita ter um Header Connection: keep-alive**
 
-    Com este link, faça uma requisição POST, utilizando um form-data com name `file_data`.
+
+Após o upload, o vimeo fará o processamento do video, gerando otimizações de resolução, podendo demorar dependendo do tamanho do video.
 
 ### Possíveis erros por limitação da conta
 - Erro Forbiden: Atingido o limite de videos na conta
@@ -58,3 +62,11 @@ Este link não necessita de headers adicionais para autenticação, pois os parâmet
 | Vimeo Standard	| 250 |
 | Vimeo Advanced	| 750 |
 | Vimeo Enterprise  | 2500 |
+
+### Limitações do arquivo
+O arquivo de video não pode ultrapassar 250GB e não pode ter duração maior que 24 horas.
+
+#### Referências
+https://developer.vimeo.com/api/guides/start
+
+[Método implementado: form-based](https://developer.vimeo.com/api/upload/videos#form-approach)
