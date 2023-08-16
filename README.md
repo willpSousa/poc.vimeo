@@ -38,17 +38,17 @@ O upload é bastante simplificado e fácil a implementação, sendo realizado em doi
     "name": "example.mp4"
 }
 ```
-Para verificar todas as opções de privacidade, upload e meta-data do arquivo, consulte 
+
+    Para verificar todas as opções de privacidade, upload e meta-data do arquivo, consulte [Vimeo Upload](https://developer.vimeo.com/api/reference/videos#upload_video)
 
 - Passo 2: Com o resultado do passo anterior, será gerado um link resultante que deverá ser utilizado para envio do arquivo para o vimeo.
 Este link não necessita de headers adicionais para autenticação, pois os parâmetros já fazem este trabalho.
 
-Com este link, faça uma requisição POST, utilizando um form-data com name `file_data`.
+    Com este link, faça uma requisição POST, utilizando um form-data com name `file_data`.
 
-### Possíveis erros
+### Possíveis erros por limitação da conta
 - Erro Forbiden: Atingido o limite de videos na conta
 - Erro Too many Requests: Atingido o limite de requisições por minuto
-
 
 ### Limitações de uso da API
 | Plano			    | Quantidade de requisições por minuto (por usuário*) |
