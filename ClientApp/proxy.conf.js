@@ -1,11 +1,12 @@
 const PROXY_CONFIG = [
   {
-    "/api/*": {
-      "target": "http://localhost:7013",
-      "secure": false,
-      "logLevel": "debug",
-      "changeOrigin": true
-    }
+    context: [
+      "/api"
+    ],
+    target: `https://localhost:7013`,
+    secure: false,
+    changeOrigin: true,
+    logLevel: "debug"
   }
 ]
 

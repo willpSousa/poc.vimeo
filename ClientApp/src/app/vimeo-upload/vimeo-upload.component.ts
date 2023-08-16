@@ -30,7 +30,7 @@ export class VimeoUploadComponent {
         videoUri: ''
       });
 
-      this.http.post<VimeoUploadResult>('https://localhost:7013/api/vimeo', formData)
+      this.http.post<VimeoUploadResult>('/api/vimeo', formData)
         .subscribe({
           next: (response: VimeoUploadResult) => {
             const videoResult = this.uploadedVideos.find(v => !v.videoUri);

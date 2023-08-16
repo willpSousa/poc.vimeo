@@ -21,7 +21,7 @@ public class VimeoRegistrationService
         return await UploadVideo(videoInfo, file);
     }
 
-    private async Task<VimeoVideoInfo?> CreateVideo(int fileSize)
+    private async Task<VimeoVideo?> CreateVideo(int fileSize)
     {
         using HttpClient client = new HttpClient
         {
@@ -55,10 +55,10 @@ public class VimeoRegistrationService
             throw new Exception($"Vimeo create video error: {response.StatusCode}");
         }
 
-        return await response.Content.ReadAsAsync<VimeoVideoInfo>();
+        return await response.Content.ReadAsAsync<VimeoVideo>();
     }
 
-    private async Task<VimeoUploadResultDTO> UploadVideo(VimeoVideoInfo uploadInfo, IFormFile file)
+    private async Task<VimeoUploadResultDTO> UploadVideo(VimeoVideo uploadInfo, IFormFile file)
     {
         byte[] fileBytes;
 

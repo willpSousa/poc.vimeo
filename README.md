@@ -3,8 +3,7 @@ Projeto funcional para realizar upload de videos para o vimeo.
 
 ## Instalação e utilização
 #### Front-end
-Rodar o comando `npm install` na pasta ClientApp
-Rodar o comando `npm start` na pasta ClientApp
+Rodar os comandos `npm install` e `npm start` respectivamente na pasta ClientApp
 
 #### Back-end
 Rodar o comando `dotnet run` na pasta Poc.Vimeo

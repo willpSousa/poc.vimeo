@@ -13,7 +13,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="7.0.9" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="VimeoDotNet" Version="3.2.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,6 +20,10 @@
     <Content Remove="$(SpaRoot)**" />
     <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="README.md" />
   </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules')">

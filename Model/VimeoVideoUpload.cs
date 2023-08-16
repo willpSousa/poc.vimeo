@@ -2,7 +2,7 @@
 
 namespace Poc.Vimeo.Model;
 
-public class VimeoUploadInfo
+public class VimeoVideoUpload
 {
     public string Status { get; set; }
     [JsonProperty("upload_link")]
