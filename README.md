@@ -51,9 +51,10 @@ Com este link, faça uma requisição POST, utilizando um form-data com name `file_
 
 
 ### Limitações de uso da API
-Plano			 | Quantidade de requisições por minuto (por usuário*)
-Vimeo Free		 | 25
-Vimeo Starter	 | 125
-Vimeo Standard	 | 250
-Vimeo Advanced	 | 750
-Vimeo Enterprise | 2500
+| Plano			    | Quantidade de requisições por minuto (por usuário*) |
+| ---               | --- |
+| Vimeo Free		| 25 |
+| Vimeo Starter     | 125 |
+| Vimeo Standard	| 250 |
+| Vimeo Advanced	| 750 |
+| Vimeo Enterprise  | 2500 |
