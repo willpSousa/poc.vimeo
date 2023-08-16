@@ -1,0 +1,17 @@
+<div class="container">
+  <div>
+    <button [disabled]="uploading" type="button" (click)="fileInput.click()">{{ !uploading ? 'Enviar video' : 'Enviando arquivo, aguarde...' }}</button>
+    <input #fileInput class="file" type="file" (change)="upload($event)">
+  </div>
+  <div class="uploaded-videos" *ngIf="uploadedVideos.length">
+    Videos enviados:
+    <ol>
+      <ng-container *ngFor="let vimeoUpload of uploadedVideos">
+        <li *ngIf="vimeoUpload.videoUri">
+          <a *ngIf="!vimeoUpload.hasError; else error" target="_blank" [href]="'https://vimeo.com/manage' + vimeoUpload.videoUri">{{vimeoUpload.fileName}}</a>
+          <ng-template #error><span class="error"></span>Falha no upload</ng-template>
+        </li>
+      </ng-container>
+    </ol>
+  </div>
+</div>

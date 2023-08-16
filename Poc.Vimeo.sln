@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poc.Vimeo", "Poc.Vimeo.csproj", "{D2B07E64-7B7F-4044-82C3-9733F4662899}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D2B07E64-7B7F-4044-82C3-9733F4662899}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2B07E64-7B7F-4044-82C3-9733F4662899}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2B07E64-7B7F-4044-82C3-9733F4662899}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2B07E64-7B7F-4044-82C3-9733F4662899}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4DA29510-57E5-4DE2-8F50-DEE54CDDD728}
+	EndGlobalSection
+EndGlobal
