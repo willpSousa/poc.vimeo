@@ -62,6 +62,8 @@ Um email é disparado quando o processamento termina, após a confirmação, o video
 | Vimeo Advanced	| 750 |
 | Vimeo Enterprise  | 2500 |
 
+A documentação da API especifica os Headers de resposta com a informação de uso da API. Também é especificado algumas formas para reduzir a utilização da mesma.
+
 Essa informação pode ser consultada [neste link](https://developer.vimeo.com/guidelines/rate-limiting)
 
 ### Limitações do arquivo enviado
