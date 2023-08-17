@@ -1,4 +1,5 @@
 ﻿using Poc.Vimeo.Configuration;
+using Poc.Vimeo.Constants;
 using Poc.Vimeo.DTO;
 using Poc.Vimeo.Model;
 using System.Net.Http.Headers;
@@ -9,23 +10,23 @@ public class VimeoRegistrationService
 {
     private readonly VimeoConfiguration vimeoConfiguration;
 
-    public VimeoRegistrationService()
-    {
+    public VimeoRegistrationService() =>
         vimeoConfiguration = ServiceLocator.Get<VimeoConfiguration>()!;
-    }
 
-    public async Task<VimeoUploadResultDTO> Register(IFormFile file)
+    public async Task<VimeoVideo> Register(IFormFile file)
     {
         var videoInfo = await CreateVideo((int)file.Length);
 
-        return await UploadVideo(videoInfo, file);
+        await UploadVideo(videoInfo, file);
+
+        return videoInfo;
     }
 
     private async Task<VimeoVideo?> CreateVideo(int fileSize)
     {
         using HttpClient client = new HttpClient
         {
-            BaseAddress = new Uri(vimeoConfiguration.Url)
+            BaseAddress = new Uri(VimeoApiUrl.Url)
         };
 
         client.DefaultRequestHeaders.Add("Authorization", $"bearer {vimeoConfiguration.AuthenticationToken}");
@@ -48,7 +49,7 @@ public class VimeoRegistrationService
             }
         };
 
-        var response = await client.PostAsJsonAsync(vimeoConfiguration.UploadPath, content);
+        var response = await client.PostAsJsonAsync(VimeoApiUrl.UploadPath, content);
 
         if (!response.IsSuccessStatusCode)
         {

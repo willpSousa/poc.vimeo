@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { VimeoUploadResult } from './vimeo-upload-result.model';
+import { VimeoVideo } from './vimeo-video.model';
 
 @Component({
   selector: 'app-vimeo-upload',
@@ -9,47 +9,60 @@ import { VimeoUploadResult } from './vimeo-upload-result.model';
 })
 export class VimeoUploadComponent {
   @ViewChild('fileInput') fileInput!: ElementRef;
-  state: 'empty' | 'success' | 'error' = 'empty';
   uploading = false;
+  lastUploadError = false;
+  uploadedVideos: Array<VimeoVideo> = [];
 
-  uploadedVideos: Array<VimeoUploadResult> = [];
+  statusMap = {
+    complete: 'complete',
+    error: 'error',
+    in_progress: 'in_progress'
+  }
 
-  constructor(private http: HttpClient) { }
+  statusMapCard: {[id: string] : string} = {
+    [this.statusMap.complete]: 'border-success',
+    [this.statusMap.error]: 'border-error',
+    [this.statusMap.in_progress]: 'border-secondary'
+  };
 
-  upload(event: any) {
-    const file: File = event.target.files[0];
+  constructor(private http: HttpClient) {}
+
+  upload(event: any): void {
+    const file: File= event.target.files[0];
     if (file && !this.uploading) {
       const formData = new FormData();
 
       formData.append('file_data', file);
 
       this.uploading = true;
+      this.lastUploadError = false;
 
-      this.uploadedVideos.push({
-        fileName: file.name,
-        videoUri: ''
-      });
-
-      this.http.post<VimeoUploadResult>('/api/vimeo', formData)
+      this.http.post<VimeoVideo>('/api/vimeo', formData)
         .subscribe({
-          next: (response: VimeoUploadResult) => {
-            const videoResult = this.uploadedVideos.find(v => !v.videoUri);
-
-            videoResult!.videoUri = response.videoUri;
-
+          next: (response: VimeoVideo) => {
+            this.uploadedVideos.push(response);
             this.uploading = false;
+
           },
           error: () => {
-            const videoResult = this.uploadedVideos.find(v => !v.videoUri);
-
-            videoResult!.videoUri = 'Error';
-            videoResult!.hasError = true;
-
+           this.lastUploadError = true;
             this.uploading = false;
           }
         });
 
     }
     this.fileInput.nativeElement.value = '';
+  }
+
+  checkStatus(uri: string): void {
+    const video = this.uploadedVideos.find(f => f.uri === uri);
+
+    this.http.get<VimeoVideo>(`/api/vimeo/${uri.split('/')[2]}/status`)
+      .subscribe({
+        next: (response: VimeoVideo) => {
+          video!.transcode = response.transcode;
+          video!.upload = response.upload;
+        }
+      });
   }
 }

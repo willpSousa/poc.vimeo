@@ -1,9 +1,15 @@
 using Microsoft.AspNetCore.Http.Features;
 using Poc.Vimeo.Configuration;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews();
+builder.Services
+    .AddControllersWithViews()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    }); ;
 
 builder
     .Services

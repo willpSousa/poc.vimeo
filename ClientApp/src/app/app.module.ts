@@ -7,11 +7,13 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { VimeoUploadComponent } from './vimeo-upload/vimeo-upload.component';
 import { CommonModule } from '@angular/common';
+import { SafePipe } from './safe-pipe.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    VimeoUploadComponent
+    VimeoUploadComponent,
+    SafePipe
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

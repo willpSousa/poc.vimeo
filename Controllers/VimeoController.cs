@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Poc.Vimeo.DTO;
+using Poc.Vimeo.Repository;
 using Poc.Vimeo.Services;
 
 namespace Poc.Vimeo.Controllers
@@ -23,5 +24,10 @@ namespace Poc.Vimeo.Controllers
         [HttpGet("complete")]
         public IActionResult Complete([FromQuery] string video_uri) =>
             Ok(new VimeoUploadResultDTO { VideoUri = video_uri });
+
+
+        [HttpGet("{id:int}/status")]
+        public async Task<IActionResult> GetVideoStatus(int id) =>
+            Ok(await new VimeoVideoRepository().GetById(id));
     }
 }
