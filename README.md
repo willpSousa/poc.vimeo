@@ -37,21 +37,21 @@ O upload é bastante simplificado e fácil a implementação, sendo realizado em doi
         "name": "example.mp4"
     }
     ```
-    Essa requisição terá como resultado as informações do Video no Vimeo.
+    Essencialmente é necessário somente os dados da propriedade `upload`.
+    Essa requisição terá como resultado as informações do Video criado no Vimeo.
 
     Para verificar todas as opções de privacidade, upload e meta-data do arquivo, consulte [Vimeo Upload](https://developer.vimeo.com/api/reference/videos#upload_video)
 
-- Passo 2: Com o resultado do passo anterior, será gerado um link resultante que é ser utilizado para envio do arquivo de video para o vimeo.
-    Este link não necessita de headers adicionais para autenticação.
-    Com este link, uma requisição POST é feita utilizando um form-data com name `file_data`.
-    **Essa requisição necessita ter um Header Connection: keep-alive**
-
+- Passo 2: Com o resultado do passo anterior, será gerado um link que é ser utilizado para envio do arquivo de video para o vimeo.
+    Este link não necessita de headers adicionais para autenticação, porém necessita ter um Header `Connection: keep-alive`.
+    Com este link, uma requisição POST é necessária utilizando um form-data com um `<input type="file" name="file_data>"` (Obs: o name file_data é obrigatório).
 
 Após o upload, o vimeo fará o processamento do video, gerando otimizações de resolução, podendo demorar dependendo do tamanho do video.
+Um email é disparado quando o processamento termina, após a confirmação, o video estará pronto para reprodução.
 
 ### Possíveis erros por limitação da conta
-- Erro Forbiden: Atingido o limite de videos na conta
-- Erro Too many Requests: Atingido o limite de requisições por minuto
+- Erro Forbiden: Atingido o limite mensal e/ou total de videos da conta.
+- Erro Too many Requests: Atingido o limite de requisições por minuto.
 
 ### Limitações de uso da API
 | Plano			    | Quantidade de requisições por minuto (por usuário*) |
@@ -62,8 +62,16 @@ Após o upload, o vimeo fará o processamento do video, gerando otimizações de res
 | Vimeo Advanced	| 750 |
 | Vimeo Enterprise  | 2500 |
 
-### Limitações do arquivo
+Essa informação pode ser consultada [neste link](https://developer.vimeo.com/guidelines/rate-limiting)
+
+### Limitações do arquivo enviado
 O arquivo de video não pode ultrapassar 250GB e não pode ter duração maior que 24 horas.
+
+
+### Limitações por conta
+Cada plano possui uma quantidade limitada de vídeos armazenado em sua biblioteca, confira os limites [neste link](https://vimeo.com/pt-br/upgrade).
+
+O plano Starter Free possui limite de 25 videos totais e também limite mensal de 2 videos criados / enviados por mês.
 
 #### Referências
 https://developer.vimeo.com/api/guides/start
