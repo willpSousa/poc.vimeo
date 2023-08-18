@@ -19,9 +19,9 @@
       </div>
       <ng-template #checking>Verificando status do video, aguarde....</ng-template>
       <div class="card-footer d-flex justify-content-end">
-        <button *ngIf="video.transcode.status !== statusMap.complete" class="btn btn-primary" (click)="checkStatus(video.uri)">Verificar status</button>
+        <button *ngIf="video.transcode.status !== statusMap.complete" class="btn btn-primary" (click)="checkStatus(video)">Verificar status</button>
         &nbsp;
-        <button class="btn btn-danger" (click)="delete(i)">Remover</button>
+        <button class="btn btn-danger" (click)="delete(video, i)">Remover</button>
       </div>
     </div>
   </div>

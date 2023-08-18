@@ -66,8 +66,7 @@ export class VimeoUploadComponent {
     this.videoStorage.persist(this.videos);
   }
 
-  checkStatus(uri: string): void {
-    const video = this.videos.find(f => f.uri === uri);
+  checkStatus(video: VimeoVideo): void {
 
     if (!video) {
       return;
@@ -75,7 +74,7 @@ export class VimeoUploadComponent {
 
     video.show = false;
 
-    this.http.get<VimeoVideo>(`/api/vimeo/${uri.split('/')[2]}/status`)
+    this.http.get<VimeoVideo>(`/api/vimeo/${this.extractId(video)}/status`)
       .subscribe({
         next: (response: VimeoVideo) => {
           video.transcode = response.transcode;
@@ -87,8 +86,16 @@ export class VimeoUploadComponent {
       });
   }
 
-  delete(index: number): void {
-    this.videos.splice(index, 1);
-    this.persist();
+  delete(video: VimeoVideo, index: number): void {
+    this.http.delete('/api/vimeo/' + this.extractId(video)).subscribe({
+      next: () => {
+        this.videos.splice(index, 1)
+        this.persist();
+      }
+    });
+  }
+
+  private extractId(video: VimeoVideo): number {
+    return Number.parseInt(video.uri.split('/')[2], 10);
   }
 }

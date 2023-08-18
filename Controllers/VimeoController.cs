@@ -29,5 +29,13 @@ namespace Poc.Vimeo.Controllers
         [HttpGet("{id:int}/status")]
         public async Task<IActionResult> GetVideoStatus(int id) =>
             Ok(await new VimeoVideoRepository().GetById(id));
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await new VimeoVideoRepository().Delete(id);
+
+            return Ok();
+        }
     }
 }

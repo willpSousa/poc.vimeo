@@ -1,9 +1,6 @@
 ﻿using Poc.Vimeo.Configuration;
 using Poc.Vimeo.Constants;
-using Poc.Vimeo.DTO;
 using Poc.Vimeo.Model;
-using Poc.Vimeo.Services;
-using System;
 using System.Web;
 
 namespace Poc.Vimeo.Repository;
@@ -33,6 +30,24 @@ public class VimeoVideoRepository
         }
 
         return await response.Content.ReadAsAsync<VimeoVideo>();
+    }
+
+    public async Task Delete(int id)
+    {
+        using HttpClient client = new HttpClient
+        {
+            BaseAddress = new Uri(VimeoApiUrl.Url)
+        };
+
+        client.DefaultRequestHeaders.Add("Authorization", $"bearer {vimeoConfiguration.AuthenticationToken}");
+        client.DefaultRequestHeaders.Add("Accept", "application/vnd.vimeo.*+json;version=3.4");
+
+        var response = await client.DeleteAsync($"{VimeoApiUrl.VideoPath}/{id}");
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception($"Vimeo delete video error: {response.StatusCode}");
+        }
     }
 
     private string? BuildFieldsParam()
