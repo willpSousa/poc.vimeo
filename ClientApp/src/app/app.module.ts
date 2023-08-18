@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { VimeoUploadComponent } from './vimeo-upload/vimeo-upload.component';
 import { CommonModule } from '@angular/common';
 import { SafePipe } from './safe-pipe.pipe';
+import { VimeoVideoLocalstorageService } from './vimeo-upload/vimeo-video-localstorage.service';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,7 @@ import { SafePipe } from './safe-pipe.pipe';
       { path: '', component: VimeoUploadComponent, pathMatch: 'full' }
     ])
   ],
-  providers: [],
+  providers: [VimeoVideoLocalstorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

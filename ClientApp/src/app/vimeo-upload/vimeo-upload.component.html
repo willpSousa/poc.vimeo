@@ -12,18 +12,16 @@
   </div>
 </div>
 <div class="row mt-4">
-  <div *ngFor="let video of uploadedVideos" class="col-6">
+  <div *ngFor="let video of videos; let i = index;" class="col-6">
     <div class="card" [ngClass]="statusMapCard[video.transcode.status]">
       <div class="card-body">
-        <span *ngIf="video.transcode.status !== statusMap.complete; else embedd">
-          Video não disponivel para visualização
-        </span>
-        <ng-template #embedd>
-          <div style="padding:56.19% 0 0 0;position:relative;"><iframe [src]="video.playerEmbedUrl | safe:'resourceUrl'" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" style="position:absolute;top:0;left:0;width:100%;height:100%;" [title]="video.name"></iframe></div><script [src]="'https://player.vimeo.com/api/player.js' | safe:'url'"></script>
-        </ng-template>
+        <div *ngIf="video.show; else checking" style="padding:56.19% 0 0 0;position:relative;"><iframe [src]="video.playerEmbedUrl | safe:'resourceUrl'" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" style="position:absolute;top:0;left:0;width:100%;height:100%;" [title]="video.name"></iframe></div><script [src]="'https://player.vimeo.com/api/player.js' | safe:'url'"></script>
       </div>
-      <div *ngIf="video.transcode.status !== statusMap.complete" class="card-footer d-flex justify-content-end">
-        <button class="btn btn-primary" (click)="checkStatus(video.uri)">Verificar status</button>
+      <ng-template #checking>Verificando status do video, aguarde....</ng-template>
+      <div class="card-footer d-flex justify-content-end">
+        <button *ngIf="video.transcode.status !== statusMap.complete" class="btn btn-primary" (click)="checkStatus(video.uri)">Verificar status</button>
+        &nbsp;
+        <button class="btn btn-danger" (click)="delete(i)">Remover</button>
       </div>
     </div>
   </div>

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { VimeoVideo } from './vimeo-video.model';
+import { VimeoVideoLocalstorageService } from './vimeo-video-localstorage.service';
 
 @Component({
   selector: 'app-vimeo-upload',
@@ -11,7 +12,7 @@ export class VimeoUploadComponent {
   @ViewChild('fileInput') fileInput!: ElementRef;
   uploading = false;
   lastUploadError = false;
-  uploadedVideos: Array<VimeoVideo> = [];
+  videos: Array<VimeoVideo> = [];
 
   statusMap = {
     complete: 'complete',
@@ -19,16 +20,18 @@ export class VimeoUploadComponent {
     in_progress: 'in_progress'
   }
 
-  statusMapCard: {[id: string] : string} = {
+  statusMapCard: { [id: string]: string } = {
     [this.statusMap.complete]: 'border-success',
     [this.statusMap.error]: 'border-error',
     [this.statusMap.in_progress]: 'border-secondary'
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private videoStorage: VimeoVideoLocalstorageService) {
+    this.videos = videoStorage.get();
+  }
 
   upload(event: any): void {
-    const file: File= event.target.files[0];
+    const file: File = event.target.files[0];
     if (file && !this.uploading) {
       const formData = new FormData();
 
@@ -39,13 +42,13 @@ export class VimeoUploadComponent {
 
       this.http.post<VimeoVideo>('/api/vimeo', formData)
         .subscribe({
-          next: (response: VimeoVideo) => {
-            this.uploadedVideos.push(response);
+          next: (video: VimeoVideo) => {
+            video.show = true;
             this.uploading = false;
-
+            this.add(video);
           },
           error: () => {
-           this.lastUploadError = true;
+            this.lastUploadError = true;
             this.uploading = false;
           }
         });
@@ -54,15 +57,38 @@ export class VimeoUploadComponent {
     this.fileInput.nativeElement.value = '';
   }
 
+  private add(video: VimeoVideo): void {
+    this.videos.push(video);
+    this.persist();
+  }
+
+  private persist() {
+    this.videoStorage.persist(this.videos);
+  }
+
   checkStatus(uri: string): void {
-    const video = this.uploadedVideos.find(f => f.uri === uri);
+    const video = this.videos.find(f => f.uri === uri);
+
+    if (!video) {
+      return;
+    }
+
+    video.show = false;
 
     this.http.get<VimeoVideo>(`/api/vimeo/${uri.split('/')[2]}/status`)
       .subscribe({
         next: (response: VimeoVideo) => {
-          video!.transcode = response.transcode;
-          video!.upload = response.upload;
-        }
+          video.transcode = response.transcode;
+          video.upload = response.upload;
+          video.show = true;
+          this.persist();
+        },
+        error: () => video.show = true
       });
+  }
+
+  delete(index: number): void {
+    this.videos.splice(index, 1);
+    this.persist();
   }
 }

@@ -10,4 +10,5 @@ export interface VimeoVideo {
   upload: VimeoVideoUpload;
   transcode: VimeoVideoTranscode;
   playerEmbedUrl: string;
+  show?: boolean;
 }
